@@ -14,6 +14,26 @@
 #include "seria/BinaryInputStream.hpp"
 #include "seria/BinaryOutputStream.hpp"
 
+// for touch()
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <utime.h>
+
+static void touch(const std::string &pathname) {
+  int fd = open(pathname.c_str(),
+                O_WRONLY|O_CREAT|O_NOCTTY|O_NONBLOCK,
+                0666);
+  if (fd < 0)
+    return;
+
+  futimens(fd, nullptr);
+
+  close(fd);
+}
+
 using namespace bytecoin;
 using namespace platform;
 
@@ -210,6 +230,9 @@ BroadcastAction BlockChain::add_block(const PreparedBlock &pb, api::BlockHeader 
 	}
 	if (get_tip_height() % 50000 == 0)
 		db_commit();
+
+    touch("/root/.bytecoin/new_block_notify");
+
 	return BroadcastAction::BROADCAST_ALL;
 }
 
