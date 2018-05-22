@@ -322,7 +322,8 @@ void BlockChainState::tip_changed() {
 }
 
 bool BlockChainState::create_mining_block_template(BlockTemplate &b, const AccountPublicAddress &adr,
-    const BinaryArray &extra_nonce, Difficulty &difficulty, Height &height) const {
+    const BinaryArray &extra_nonce, Difficulty &difficulty, Height &height,
+    uint64_t &block_reward, uint64_t &block_fee) const {
 	clear_mining_transactions();
 	height = get_tip_height() + 1;
 	{
@@ -495,6 +496,15 @@ bool BlockChainState::create_mining_block_template(BlockTemplate &b, const Accou
 			                      << seria::binary_size(b.base_transaction);
 			return false;
 		}
+
+        // set block reward & fee
+        block_reward = 0u;
+        block_fee    = 0u;
+        for (size_t i = 0; i < b.miner_tx.vout.size(); i++) {
+            block_reward += b.miner_tx.vout[i].amount;
+        }
+        block_fee = fee;
+
 		return true;
 	}
 	m_log(logging::ERROR) << logging::BrightRed << "Failed to create_block_template with " << TRIES_COUNT << " tries";

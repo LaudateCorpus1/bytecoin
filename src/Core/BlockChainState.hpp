@@ -79,7 +79,7 @@ public:
 	const TransMap &get_memory_state_transactions() const { return m_memory_state_tx; }
 
 	bool create_mining_block_template(
-	    BlockTemplate &, const AccountPublicAddress &, const BinaryArray &extra_nonce, Difficulty &, Height &) const;
+	    BlockTemplate &, const AccountPublicAddress &, const BinaryArray &extra_nonce, Difficulty &, Height &, uint64_t &block_reward, uint64_t &block_fee) const;
 	BroadcastAction add_mined_block(const BinaryArray &raw_block_template, RawBlock &, api::BlockHeader &);
 	Timestamp read_first_seen_timestamp(const Hash &tid) const;  // 0 if does not exist
 
