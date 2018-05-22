@@ -500,8 +500,8 @@ bool BlockChainState::create_mining_block_template(BlockTemplate &b, const Accou
         // set block reward & fee
         block_reward = 0u;
         block_fee    = 0u;
-        for (size_t i = 0; i < b.miner_tx.vout.size(); i++) {
-            block_reward += b.miner_tx.vout[i].amount;
+        for (size_t i = 0; i < b.base_transaction.outputs.size(); i++) {
+            block_reward += b.base_transaction.outputs[i].amount;
         }
         block_fee = fee;
 
