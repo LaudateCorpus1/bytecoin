@@ -389,7 +389,11 @@ bool BlockChainState::create_mining_block_template(BlockTemplate &b, const Accou
 	// technically we should give unlock timestamp of next block, but more
 	// conservative also works
 
+    size_t nTx = 0;
 	for (; !pool_hashes.empty(); pool_hashes.pop_back()) {
+        if (nTx > 120) {
+            break;  // limit tx number
+        }
 		auto tit = m_memory_state_tx.find(pool_hashes.back());
 		if (tit == m_memory_state_tx.end()) {
 			m_log(logging::ERROR) << "Transaction " << common::pod_to_hex(pool_hashes.back())
@@ -417,6 +421,8 @@ bool BlockChainState::create_mining_block_template(BlockTemplate &b, const Accou
 		b.transaction_hashes.emplace_back(tit->first);
 		m_mining_transactions.insert(std::make_pair(tit->first, std::make_pair(tit->second, height)));
 		m_log(logging::TRACE) << "Transaction " << common::pod_to_hex(tit->first) << " included to block template";
+
+        nTx++;
 	}
 
 	// two-phase miner transaction generation: we don't know exact block size
