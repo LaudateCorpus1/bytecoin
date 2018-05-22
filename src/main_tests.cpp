@@ -65,7 +65,8 @@ void test_blockchain(common::CommandLine &cmd) {
 		BlockTemplate block;
 		Difficulty difficulty = 0;
 		Height height         = 0;
-		if (!block_chain.create_mining_block_template(block, address, bytecoin::BinaryArray{}, difficulty, height))
+        uint64_t block_reward = 0u, block_fee = 0u;
+		if (!block_chain.create_mining_block_template(block, address, bytecoin::BinaryArray{}, difficulty, height, block_reward, block_fee))
 			throw std::runtime_error("create_mining_block_template failed");
 		fix_merge_mining_tag(block);
 		block.timestamp = ts + (i + 1) * currency.difficulty_target;

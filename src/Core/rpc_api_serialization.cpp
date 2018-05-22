@@ -471,6 +471,8 @@ void ser_members(bytecoin::api::bytecoind::GetBlockTemplate::Response &v, ISeria
 	seria_kv("status", v.status, s);
 	seria_kv("top_block_hash", v.top_block_hash, s);
 	seria_kv("transaction_pool_version", v.transaction_pool_version, s);
+	seria_kv("block_reward", v.block_reward, s);
+	seria_kv("block_fee", v.block_fee, s);
 }
 void ser_members(bytecoin::api::bytecoind::GetCurrencyId::Response &v, ISeria &s) {
 	seria_kv("currency_id_blob", v.currency_id_blob, s);

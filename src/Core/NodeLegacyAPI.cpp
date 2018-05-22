@@ -118,7 +118,7 @@ void Node::getblocktemplate(const api::bytecoind::GetBlockTemplate::Request &req
 	BinaryArray blob_reserve;
 	blob_reserve.resize(req.reserve_size, 0);
 
-	if (!m_block_chain.create_mining_block_template(block_template, acc, blob_reserve, res.difficulty, res.height)) {
+	if (!m_block_chain.create_mining_block_template(block_template, acc, blob_reserve, res.difficulty, res.height, res.block_reward, res.block_fee)) {
 		m_log(logging::ERROR) << "Failed to create block template";
 		throw json_rpc::Error{CORE_RPC_ERROR_CODE_INTERNAL_ERROR, "Internal error: failed to create block template"};
 	}
